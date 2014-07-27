@@ -1,14 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="WritingTracker" Class="WritingTrackerDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\sql\WritingTracker.mdf;Integrated Security=True" SettingsObjectName="Word_WritingTracker.Properties.Settings" SettingsPropertyName="WritingTrackerConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Metrics" Member="Metrics">
-    <Type Name="Metric">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="FileID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TimeStamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="WordCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="TrackedFile_Metric" Member="TrackedFile" ThisKey="FileID" OtherKey="ID" Type="TrackedFile" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.TrackedFiles" Member="TrackedFiles">
     <Type Name="TrackedFile">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -16,6 +7,15 @@
       <Column Name="Tracked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="ProjectName" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
       <Association Name="TrackedFile_Metric" Member="Metrics" ThisKey="ID" OtherKey="FileID" Type="Metric" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Metrics" Member="Metrics">
+    <Type Name="Metric">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FileID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TimeStamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="WordCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="TrackedFile_Metric" Member="TrackedFile" ThisKey="FileID" OtherKey="ID" Type="TrackedFile" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

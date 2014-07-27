@@ -30,12 +30,12 @@ namespace Word_WritingTracker.sql
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertMetric(Metric instance);
-    partial void UpdateMetric(Metric instance);
-    partial void DeleteMetric(Metric instance);
     partial void InsertTrackedFile(TrackedFile instance);
     partial void UpdateTrackedFile(TrackedFile instance);
     partial void DeleteTrackedFile(TrackedFile instance);
+    partial void InsertMetric(Metric instance);
+    partial void UpdateMetric(Metric instance);
+    partial void DeleteMetric(Metric instance);
     #endregion
 		
 		public WritingTrackerDataContext() : 
@@ -68,6 +68,14 @@ namespace Word_WritingTracker.sql
 			OnCreated();
 		}
 		
+		public System.Data.Linq.Table<TrackedFile> TrackedFiles
+		{
+			get
+			{
+				return this.GetTable<TrackedFile>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Metric> Metrics
 		{
 			get
@@ -75,13 +83,167 @@ namespace Word_WritingTracker.sql
 				return this.GetTable<Metric>();
 			}
 		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrackedFiles")]
+	public partial class TrackedFile : INotifyPropertyChanging, INotifyPropertyChanged
+	{
 		
-		public System.Data.Linq.Table<TrackedFile> TrackedFiles
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _FileName;
+		
+		private bool _Tracked;
+		
+		private string _ProjectName;
+		
+		private EntitySet<Metric> _Metrics;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnFileNameChanging(string value);
+    partial void OnFileNameChanged();
+    partial void OnTrackedChanging(bool value);
+    partial void OnTrackedChanged();
+    partial void OnProjectNameChanging(string value);
+    partial void OnProjectNameChanged();
+    #endregion
+		
+		public TrackedFile()
+		{
+			this._Metrics = new EntitySet<Metric>(new Action<Metric>(this.attach_Metrics), new Action<Metric>(this.detach_Metrics));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
 		{
 			get
 			{
-				return this.GetTable<TrackedFile>();
+				return this._ID;
 			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string FileName
+		{
+			get
+			{
+				return this._FileName;
+			}
+			set
+			{
+				if ((this._FileName != value))
+				{
+					this.OnFileNameChanging(value);
+					this.SendPropertyChanging();
+					this._FileName = value;
+					this.SendPropertyChanged("FileName");
+					this.OnFileNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tracked", DbType="Bit NOT NULL")]
+		public bool Tracked
+		{
+			get
+			{
+				return this._Tracked;
+			}
+			set
+			{
+				if ((this._Tracked != value))
+				{
+					this.OnTrackedChanging(value);
+					this.SendPropertyChanging();
+					this._Tracked = value;
+					this.SendPropertyChanged("Tracked");
+					this.OnTrackedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProjectName", DbType="NVarChar(1000) NOT NULL", CanBeNull=false)]
+		public string ProjectName
+		{
+			get
+			{
+				return this._ProjectName;
+			}
+			set
+			{
+				if ((this._ProjectName != value))
+				{
+					this.OnProjectNameChanging(value);
+					this.SendPropertyChanging();
+					this._ProjectName = value;
+					this.SendPropertyChanged("ProjectName");
+					this.OnProjectNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrackedFile_Metric", Storage="_Metrics", ThisKey="ID", OtherKey="FileID")]
+		public EntitySet<Metric> Metrics
+		{
+			get
+			{
+				return this._Metrics;
+			}
+			set
+			{
+				this._Metrics.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Metrics(Metric entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrackedFile = this;
+		}
+		
+		private void detach_Metrics(Metric entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrackedFile = null;
 		}
 	}
 	
@@ -257,168 +419,6 @@ namespace Word_WritingTracker.sql
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrackedFiles")]
-	public partial class TrackedFile : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private string _FileName;
-		
-		private bool _Tracked;
-		
-		private string _ProjectName;
-		
-		private EntitySet<Metric> _Metrics;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnFileNameChanging(string value);
-    partial void OnFileNameChanged();
-    partial void OnTrackedChanging(bool value);
-    partial void OnTrackedChanged();
-    partial void OnProjectNameChanging(string value);
-    partial void OnProjectNameChanged();
-    #endregion
-		
-		public TrackedFile()
-		{
-			this._Metrics = new EntitySet<Metric>(new Action<Metric>(this.attach_Metrics), new Action<Metric>(this.detach_Metrics));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FileName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string FileName
-		{
-			get
-			{
-				return this._FileName;
-			}
-			set
-			{
-				if ((this._FileName != value))
-				{
-					this.OnFileNameChanging(value);
-					this.SendPropertyChanging();
-					this._FileName = value;
-					this.SendPropertyChanged("FileName");
-					this.OnFileNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tracked", DbType="Bit NOT NULL")]
-		public bool Tracked
-		{
-			get
-			{
-				return this._Tracked;
-			}
-			set
-			{
-				if ((this._Tracked != value))
-				{
-					this.OnTrackedChanging(value);
-					this.SendPropertyChanging();
-					this._Tracked = value;
-					this.SendPropertyChanged("Tracked");
-					this.OnTrackedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProjectName", DbType="NVarChar(1000) NOT NULL", CanBeNull=false)]
-		public string ProjectName
-		{
-			get
-			{
-				return this._ProjectName;
-			}
-			set
-			{
-				if ((this._ProjectName != value))
-				{
-					this.OnProjectNameChanging(value);
-					this.SendPropertyChanging();
-					this._ProjectName = value;
-					this.SendPropertyChanged("ProjectName");
-					this.OnProjectNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrackedFile_Metric", Storage="_Metrics", ThisKey="ID", OtherKey="FileID")]
-		public EntitySet<Metric> Metrics
-		{
-			get
-			{
-				return this._Metrics;
-			}
-			set
-			{
-				this._Metrics.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Metrics(Metric entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrackedFile = this;
-		}
-		
-		private void detach_Metrics(Metric entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrackedFile = null;
 		}
 	}
 }
