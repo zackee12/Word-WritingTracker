@@ -62,13 +62,60 @@ namespace Word_WritingTracker
         public static Tuple<String, String> GetProjectInfo(Word.Document document)
         {
             String fullFileName = document.FullName;
-            Wr
             String projectName = System.IO.Path.GetFileNameWithoutExtension(fullFileName);
             return new Tuple<String, String>(fullFileName, projectName);
         }
 
-        
-        
-       
+        public static TrackedFile GetTrackedFile(Tuple<String, String> projectInfo)
+        {
+            return GetTrackedFile(projectInfo.Item1, projectInfo.Item2);
+        }
+
+        public static TrackedFile GetTrackedFile(String fullFilePath, String projectName)
+        {
+            using (WritingTrackerDataContext db = new WritingTrackerDataContext())
+            {
+                IEnumerable<TrackedFile> trackedFiles = from tf in db.TrackedFiles
+                                                        where tf.ProjectName == projectName
+                                                        where tf.FileName == fullFilePath
+                                                        select tf;
+
+                return trackedFiles.SingleOrDefault();
+            }
+        }
+
+        public static TrackedFile GetTrackedFile(String projectName)
+        {
+            using (WritingTrackerDataContext db = new WritingTrackerDataContext())
+            {
+                IEnumerable<TrackedFile> trackedFiles = from tf in db.TrackedFiles
+                                                        where tf.ProjectName == projectName
+                                                        select tf;
+
+                return trackedFiles.SingleOrDefault();
+            }
+        }
+
+        public static Boolean DocumentIsTracked(Word.Document document)
+        {
+            Tuple<String, String> projectInfo = GetProjectInfo(document);
+            TrackedFile trackedFile = GetTrackedFile(projectInfo);
+
+            if (!trackedFile.IsDefaultForType())
+                return trackedFile.Tracked;
+
+            return false;
+        }
+
+        public static Boolean ProjectFilePathIsWrong(Word.Document document)
+        {
+            Tuple<String, String> projectInfo = GetProjectInfo(document);
+            TrackedFile trackedFile = GetTrackedFile(projectInfo);
+
+            if (!trackedFile.IsDefaultForType())
+                return trackedFile.FileName == projectInfo.Item1;
+            
+            return false;
+        }
     }
 }
