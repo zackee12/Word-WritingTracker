@@ -54,6 +54,19 @@ namespace Word_WritingTracker
             return GetStatistic(document, includeFootnotesAndEndnotes, Statistic.wdStatisticPages);
         }
 
+        /// <summary>
+        /// Get the project info (full file name and project name) from a specified document
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        public static Tuple<String, String> GetProjectInfo(Word.Document document)
+        {
+            String fullFileName = document.FullName;
+            String projectName = System.IO.Path.GetFileNameWithoutExtension(fullFileName);
+            return new Tuple<String, String>(fullFileName, projectName);
+        }
+
+        
        
     }
 }
