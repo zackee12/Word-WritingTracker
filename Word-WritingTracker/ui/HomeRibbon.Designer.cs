@@ -37,8 +37,9 @@
             this.tabHome = this.Factory.CreateRibbonTab();
             this.groupTracking = this.Factory.CreateRibbonGroup();
             this.checkBoxTrackMetrics = this.Factory.CreateRibbonCheckBox();
-            this.button1 = this.Factory.CreateRibbonButton();
+            this.buttonChart = this.Factory.CreateRibbonButton();
             this.buttonExport = this.Factory.CreateRibbonButton();
+            this.buttonSettings = this.Factory.CreateRibbonButton();
             this.tabHome.SuspendLayout();
             this.groupTracking.SuspendLayout();
             // 
@@ -53,8 +54,9 @@
             // groupTracking
             // 
             this.groupTracking.Items.Add(this.checkBoxTrackMetrics);
-            this.groupTracking.Items.Add(this.button1);
             this.groupTracking.Items.Add(this.buttonExport);
+            this.groupTracking.Items.Add(this.buttonSettings);
+            this.groupTracking.Items.Add(this.buttonChart);
             this.groupTracking.Label = "Tracking";
             this.groupTracking.Name = "groupTracking";
             // 
@@ -62,20 +64,36 @@
             // 
             this.checkBoxTrackMetrics.Label = "Track Metrics";
             this.checkBoxTrackMetrics.Name = "checkBoxTrackMetrics";
+            this.checkBoxTrackMetrics.ScreenTip = "Track this document";
+            this.checkBoxTrackMetrics.SuperTip = "Enables tracking of the current document\'s word count";
             // 
-            // button1
+            // buttonChart
             // 
-            this.button1.Label = "Charts";
-            this.button1.Name = "button1";
-            this.button1.OfficeImageId = "Chart3DColumnChart";
-            this.button1.ShowImage = true;
+            this.buttonChart.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonChart.Label = "Chart";
+            this.buttonChart.Name = "buttonChart";
+            this.buttonChart.OfficeImageId = "Chart3DColumnChart";
+            this.buttonChart.ScreenTip = "Open Charts";
+            this.buttonChart.ShowImage = true;
+            this.buttonChart.SuperTip = "Opens configurable word count charts";
             // 
             // buttonExport
             // 
             this.buttonExport.Label = "Export";
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.OfficeImageId = "FileSaveAsExcelXlsx";
+            this.buttonExport.ScreenTip = "Export Data";
             this.buttonExport.ShowImage = true;
+            this.buttonExport.SuperTip = "Export SQL data to a formated Excel document";
+            // 
+            // buttonSettings
+            // 
+            this.buttonSettings.Label = "Settings";
+            this.buttonSettings.Name = "buttonSettings";
+            this.buttonSettings.OfficeImageId = "AdpStoredProcedureEditSql";
+            this.buttonSettings.ScreenTip = "Project Settings";
+            this.buttonSettings.ShowImage = true;
+            this.buttonSettings.SuperTip = "Adjust project settings such as project name and location";
             // 
             // HomeRibbon
             // 
@@ -95,8 +113,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabHome;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupTracking;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBoxTrackMetrics;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonChart;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonExport;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSettings;
     }
 
     partial class ThisRibbonCollection
