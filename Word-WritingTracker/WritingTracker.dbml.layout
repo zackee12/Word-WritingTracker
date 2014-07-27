@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="WritingTracker">
+  <DataContextMoniker Name="/WritingTrackerDataContext" />
+  <nestedChildShapes>
+    <classShape Id="6412b37d-6096-4bcf-afc8-ff7c3a01bb96" absoluteBounds="4.75, 1.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/WritingTrackerDataContext/Metric" />
+      <nestedChildShapes>
+        <elementListCompartment Id="42878580-501f-4792-b5b7-2462c0862cb3" absoluteBounds="4.765, 1.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e44bd7ed-bb09-4acf-9409-3fb12e57ed06" absoluteBounds="6, 3.75, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/WritingTrackerDataContext/TrackedFile" />
+      <nestedChildShapes>
+        <elementListCompartment Id="653a382e-fe85-407e-9735-b9df29efbabc" absoluteBounds="6.015, 4.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.375 : 3.75); (6.375 : 2.82859537760417)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/WritingTrackerDataContext/TrackedFile/TrackedFile_Metric" />
+      <nodes>
+        <classShapeMoniker Id="e44bd7ed-bb09-4acf-9409-3fb12e57ed06" />
+        <classShapeMoniker Id="6412b37d-6096-4bcf-afc8-ff7c3a01bb96" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

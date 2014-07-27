@@ -62,10 +62,12 @@ namespace Word_WritingTracker
         public static Tuple<String, String> GetProjectInfo(Word.Document document)
         {
             String fullFileName = document.FullName;
+            Wr
             String projectName = System.IO.Path.GetFileNameWithoutExtension(fullFileName);
             return new Tuple<String, String>(fullFileName, projectName);
         }
 
+        
         
        
     }
