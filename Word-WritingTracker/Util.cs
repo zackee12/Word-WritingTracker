@@ -117,6 +117,11 @@ namespace Word_WritingTracker
             }
         }
 
+        /// <summary>
+        /// Check if a document exists in the db and is marked as tracked
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
         public static Boolean DocumentIsTracked(Word.Document document)
         {
             Tuple<String, String> projectInfo = GetProjectInfo(document);
@@ -128,6 +133,10 @@ namespace Word_WritingTracker
             return false;
         }
 
+        /// <summary>
+        /// Add a new tracked file to the db
+        /// </summary>
+        /// <param name="trackedFile"></param>
         public static void InsertTrackedFile(TrackedFile trackedFile)
         {
             using (WritingTrackerDataContext db = new WritingTrackerDataContext())
@@ -137,6 +146,10 @@ namespace Word_WritingTracker
             }
         }
 
+        /// <summary>
+        /// Update a tracked file (by project name) with new values
+        /// </summary>
+        /// <param name="trackedFile"></param>
         public static void UpdateTrackedFile(TrackedFile trackedFile)
         {
             using (WritingTrackerDataContext db = new WritingTrackerDataContext())
@@ -159,6 +172,12 @@ namespace Word_WritingTracker
             InsertMetric(document, Util.GetWordCount(document, false), DateTime.Now);
         }
 
+        /// <summary>
+        /// Insert a new document metric with the specified count and time stamp
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="wordCount"></param>
+        /// <param name="dateTime"></param>
         public static void InsertMetric(Word.Document document, int wordCount, DateTime dateTime)
         {
             using (WritingTrackerDataContext db = new WritingTrackerDataContext())
@@ -183,6 +202,10 @@ namespace Word_WritingTracker
             }
         }
 
+        /// <summary>
+        /// Get the last metric of each day for all projects that are marked as tracked
+        /// </summary>
+        /// <returns></returns>
         public static Dictionary<TrackedFile, List<Metric>> GetLastMetricOfDayForTrackedProjects()
         {
             var dict = new Dictionary<TrackedFile, List<Metric>>();
@@ -204,6 +227,13 @@ namespace Word_WritingTracker
             return dict;
         }
 
+        /// <summary>
+        /// Get the last metric of each day for all projects that are marked as tracked
+        /// Filter data between a given start and end date
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
         public static Dictionary<TrackedFile, List<Metric>> GetLastMetricOfDayForTrackedProjects(DateTime startDate, DateTime endDate)
         {
             var dict = new Dictionary<TrackedFile, List<Metric>>();
@@ -227,6 +257,14 @@ namespace Word_WritingTracker
             return dict;
         }
 
+        /// <summary>
+        /// Get the daily word count for each project between a given date
+        /// 1 data point per date is returned
+        /// Dates without a data point are interpolated from the previous datapoint
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
         public static Dictionary<String, List<Tuple<DateTime, int>>> GetDailyWordCount(DateTime startDate, DateTime endDate)
         {
             var dict = GetLastMetricOfDayForTrackedProjects();
