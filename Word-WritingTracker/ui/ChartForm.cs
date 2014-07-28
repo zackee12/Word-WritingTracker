@@ -28,7 +28,44 @@ namespace Word_WritingTracker
 
         private void setWordsPerDayChart()
         {
+            Tuple<DateTime, DateTime> range = GetTimeSpanFromComboBox();
+            this.chart.ChartAreas[0].AxisX.LabelStyle.Interval = (range.Item2 - range.Item1).Days / 5.0;
+            this.chart.ChartAreas[0].AxisX.LabelStyle.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Days;
 
+
+            this.chart.Series.Clear();
+
+
+            this.chart.Legends[0].Enabled = true;
+            this.chart.Titles[0].Text = "Words / Day";
+            this.chart.ChartAreas[0].AxisX.Title = "Date";
+
+            Dictionary<String, List<Tuple<DateTime, int>>> dict = Util.GetDailyWordCount(range.Item1, range.Item2);
+            foreach (String projectName in dict.Keys)
+            {
+                List<Tuple<DateTime, int>> dataList = new List<Tuple<DateTime, int>>();
+                if (!dict.TryGetValue(projectName, out dataList))
+                    System.Diagnostics.Debug.WriteLine("Failed to get data list value");
+
+                var series = new System.Windows.Forms.DataVisualization.Charting.Series
+                {
+                    Name = projectName,
+                    ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn,
+                    XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Date
+                };
+
+                this.chart.Series.Add(series);
+
+                foreach (Tuple<DateTime, int> tuple in dataList)
+                {
+                    // add a datapoint with a tool tip
+                    System.Windows.Forms.DataVisualization.Charting.DataPoint point = new System.Windows.Forms.DataVisualization.Charting.DataPoint();
+                    point.SetValueXY(tuple.Item1, tuple.Item2);
+                    point.ToolTip = String.Format("{0:MM/dd/yyyy} - {1}", tuple.Item1, tuple.Item2);
+                    series.Points.Add(point);
+                }
+            }
+            this.chart.Invalidate();
         }
 
         private void setWordsPerProjectChart()

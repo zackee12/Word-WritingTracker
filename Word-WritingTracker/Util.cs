@@ -156,10 +156,10 @@ namespace Word_WritingTracker
 
         public static void InsertMetric(Word.Document document)
         {
-            InsertMetric(document, Util.GetWordCount(document, false));
+            InsertMetric(document, Util.GetWordCount(document, false), DateTime.Now);
         }
 
-        public static void InsertMetric(Word.Document document, int wordCount)
+        public static void InsertMetric(Word.Document document, int wordCount, DateTime dateTime)
         {
             using (WritingTrackerDataContext db = new WritingTrackerDataContext())
             {
@@ -174,7 +174,7 @@ namespace Word_WritingTracker
                     {
                         TrackedFile = tracked,
                         WordCount = wordCount,
-                        TimeStamp = DateTime.Now
+                        TimeStamp = dateTime
                     };
                     db.Metrics.InsertOnSubmit(metric);
                     db.SubmitChanges();

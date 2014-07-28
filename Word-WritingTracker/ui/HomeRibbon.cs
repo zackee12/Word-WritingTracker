@@ -9,6 +9,8 @@ namespace Word_WritingTracker
 {
     public partial class HomeRibbon
     {
+        private ChartForm chartForm = new ChartForm();
+
         private void HomeRibbon_Load(object sender, RibbonUIEventArgs e)
         {
             System.Diagnostics.Debug.WriteLineIf(Util.DEBUG, "HomeRibbon_Load");
@@ -75,7 +77,7 @@ namespace Word_WritingTracker
 
                 Util.InsertTrackedFile(entry);
                 // insert initial 0 metric
-                Util.InsertMetric(activeDoc, 0);
+                Util.InsertMetric(activeDoc, 0, DateTime.Now.AddDays(-1));
             }
             
         }
@@ -92,8 +94,13 @@ namespace Word_WritingTracker
 
         private void buttonChart_Click(object sender, RibbonControlEventArgs e)
         {
-            ChartForm cf = new ChartForm();
-            cf.Show();
+            if (chartForm.IsDisposed)
+            {
+                chartForm = new ChartForm();
+            }
+            chartForm.Show();
+            chartForm.Activate();
+            
         }
         #endregion
     }
