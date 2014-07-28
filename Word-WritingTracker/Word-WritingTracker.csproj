@@ -34,7 +34,7 @@
     <PublishUrl>C:\Users\Zack\Dropbox\Kaela\Give to Kaela\Programs\Word-WritingTracker\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.4</ApplicationVersion>
+    <ApplicationVersion>1.0.0.5</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -260,8 +260,6 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dbo.Metrics.sql" />
-    <Content Include="dbo.TrackedFiles.sql" />
     <Content Include="sql\WritingTracker.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
