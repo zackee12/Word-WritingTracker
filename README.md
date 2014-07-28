@@ -1,4 +1,8 @@
 Word-WritingTracker
 ===================
 
-MS Word Add-in to track documents for word count changes.
+###Microsoft Word Add-in
+
+- Customized ribbon buttons on Home tab
+- Tracking word count option for any MSWord document
+- Configurable charts for word count / day and total word count / project
