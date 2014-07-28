@@ -74,6 +74,8 @@ namespace Word_WritingTracker
                 };
 
                 Util.InsertTrackedFile(entry);
+                // insert initial 0 metric
+                Util.InsertMetric(activeDoc, 0);
             }
             
         }

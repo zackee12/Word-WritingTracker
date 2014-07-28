@@ -156,6 +156,11 @@ namespace Word_WritingTracker
 
         public static void InsertMetric(Word.Document document)
         {
+            InsertMetric(document, Util.GetWordCount(document, false));
+        }
+
+        public static void InsertMetric(Word.Document document, int wordCount)
+        {
             using (WritingTrackerDataContext db = new WritingTrackerDataContext())
             {
                 Tuple<String, String> projectInfo = GetProjectInfo(document);
@@ -165,19 +170,100 @@ namespace Word_WritingTracker
 
                 if (!tracked.IsDefaultForType())
                 {
-                    Metric metric = new Metric 
+                    Metric metric = new Metric
                     {
                         TrackedFile = tracked,
-                        WordCount = Util.GetWordCount(document, false),
+                        WordCount = wordCount,
                         TimeStamp = DateTime.Now
                     };
                     db.Metrics.InsertOnSubmit(metric);
                     db.SubmitChanges();
                 }
-                
+
             }
         }
 
+        public static Dictionary<TrackedFile, List<Metric>> GetLastMetricOfDayForTrackedProjects()
+        {
+            var dict = new Dictionary<TrackedFile, List<Metric>>();
+            var db = new WritingTrackerDataContext();
+
+            IEnumerable<TrackedFile> currentTrackedQuery = from t in db.TrackedFiles
+                                                           where t.Tracked == true
+                                                           select t;
+
+            foreach (TrackedFile tracked in currentTrackedQuery)
+            {
+                List<Metric> lastMetricEachDay = (from metric in tracked.Metrics
+                                                  let time = metric.TimeStamp
+                                                  group metric by new { timestamp = time.Date } into g
+                                                  select g.OrderByDescending(t => t.TimeStamp).FirstOrDefault()).ToList();
+
+                dict.Add(tracked, lastMetricEachDay);
+            }
+            return dict;
+        }
+
+        public static Dictionary<TrackedFile, List<Metric>> GetLastMetricOfDayForTrackedProjects(DateTime startDate, DateTime endDate)
+        {
+            var dict = new Dictionary<TrackedFile, List<Metric>>();
+            var db = new WritingTrackerDataContext();
+
+            IEnumerable<TrackedFile> currentTrackedQuery = from t in db.TrackedFiles
+                                                           where t.Tracked == true
+                                                           select t;
+
+            foreach (TrackedFile tracked in currentTrackedQuery)
+            {
+                
+                List<Metric> lastMetricEachDay = (from metric in tracked.Metrics
+                                                        let time = metric.TimeStamp
+                                                        where time.Date >= startDate.Date
+                                                        where time.Date <= endDate.Date
+                                                        group metric by new { timestamp = time.Date } into g
+                                                        select g.OrderByDescending(t => t.TimeStamp).FirstOrDefault()).ToList();
+                dict.Add(tracked, lastMetricEachDay);
+            }
+            return dict;
+        }
+
+        public static Dictionary<String, List<Tuple<DateTime, int>>> GetDailyWordCount(DateTime startDate, DateTime endDate)
+        {
+            var dict = GetLastMetricOfDayForTrackedProjects();
+            var wordDict = new Dictionary<String, List<Tuple<DateTime, int>>>();
+            foreach (TrackedFile tf in dict.Keys)
+            {
+                var metricList = new List<Metric>();
+                if (!dict.TryGetValue(tf, out metricList))
+                    System.Diagnostics.Debug.WriteLine("Failed to get metricList from dictionary");
+
+                metricList = metricList.OrderByDescending(m => m.TimeStamp).ToList();
+                //DateTime start = metricList.Last().Timestamp;
+                //DateTime end = metricList.First().Timestamp;
+                DateTime start = startDate;
+                DateTime end = endDate;
+
+                var list = new List<Tuple<DateTime, int>>();
+                // fill in each date delta word count
+                for (DateTime date = end.Date; date >= start.Date; date = date.AddDays(-1))
+                {
+                    // get the current date
+                    Metric current = metricList.SingleOrDefault(m => m.TimeStamp.Date == date);
+                    // get the date before
+                    Metric next = metricList.FirstOrDefault(m => m.TimeStamp.Date < date);
+
+                    int wordDelta;
+                    if (current != null && next != null)
+                        wordDelta = current.WordCount - next.WordCount;
+                    else
+                        wordDelta = 0;
+
+                    list.Add(new Tuple<DateTime, int>(date, wordDelta));
+                }
+                wordDict.Add(tf.ProjectName, list);
+            }
+            return wordDict;
+        }
         
     }
 }
