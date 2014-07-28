@@ -55,5 +55,10 @@ namespace Word_WritingTracker
         {
             return new DateTime(dt.Year, 1, 1);
         }
+
+        public static Boolean IsDefaultForType<T>(this T obj)
+        {
+            return EqualityComparer<T>.Default.Equals(obj, default(T));
+        }
     }
 }
