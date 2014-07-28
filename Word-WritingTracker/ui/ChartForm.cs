@@ -17,6 +17,9 @@ namespace Word_WritingTracker
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Set defaults to be ran on form load
+        /// </summary>
         private void setDefaults()
         {
             comboBoxTimeSpan.SelectedIndex = 0;
@@ -26,6 +29,9 @@ namespace Word_WritingTracker
 
         }
 
+        /// <summary>
+        /// Set the chart to display the words per day chart
+        /// </summary>
         private void setWordsPerDayChart()
         {
             Tuple<DateTime, DateTime> range = GetTimeSpanFromComboBox();
@@ -68,6 +74,9 @@ namespace Word_WritingTracker
             this.chart.Invalidate();
         }
 
+        /// <summary>
+        /// Set the chart to display the words per project chart
+        /// </summary>
         private void setWordsPerProjectChart()
         {
             // clear data
@@ -110,6 +119,10 @@ namespace Word_WritingTracker
             this.chart.Invalidate();
         }
 
+        /// <summary>
+        /// Get the time span from the combobox selection
+        /// </summary>
+        /// <returns></returns>
         private Tuple<DateTime, DateTime> GetTimeSpanFromComboBox()
         {
             DateTime start, end;
@@ -160,6 +173,11 @@ namespace Word_WritingTracker
             setDefaults();
         }
 
+        /// <summary>
+        /// Save the chart to an image file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog
@@ -192,7 +210,8 @@ namespace Word_WritingTracker
                         format = System.Windows.Forms.DataVisualization.Charting.ChartImageFormat.Tiff;
                         break;
                     default:
-                        throw new NotImplementedException("This extension hasn't been implemented for a save");
+                        MessageBox.Show("Sorry! This file type is not supported.", "Invalid File Type", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
                 }
 
                 this.chart.SaveImage(path, format);
