@@ -28,6 +28,7 @@ namespace Word_WritingTracker
                 return;
             }
             else if (String.IsNullOrEmpty(activeDoc.Path)){
+                // should not reach a state where this occurs (button will be disabled)
                 cb.Checked = false;
                 MessageBox.Show("Document must be saved before tracking can be applied.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -36,6 +37,44 @@ namespace Word_WritingTracker
             // <file path, project name>
             Tuple<String, String> projectInfo = Util.GetProjectInfo(activeDoc);
 
+            TrackedFile dbEntry = Util.GetTrackedFile(projectInfo.Item2);
+
+            if (!dbEntry.IsDefaultForType())
+            {
+                // check if the file path matches
+                if (dbEntry.FileName.Equals(projectInfo.Item1))
+                {
+                    dbEntry.Tracked = cb.Checked;
+                }
+                else
+                {
+                    // prompt user to update the path
+                    switch (MessageBox.Show(String.Format("This project name already exists in the database at a different file path.\n\n{0}\n\nDo you want to update the path to match this document?",dbEntry.FileName), "New File Location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                    {
+                        case DialogResult.Yes:
+                            dbEntry.FileName = projectInfo.Item1;
+                            dbEntry.Tracked = cb.Checked;
+                            break;
+                        default:
+                            cb.Checked = false;
+                            return;
+                    }
+                }
+                // write changes to database
+                Util.UpdateTrackedFile(dbEntry);
+            }
+            else
+            {
+                // add a new entry
+                TrackedFile entry = new TrackedFile
+                {
+                    FileName = projectInfo.Item1,
+                    Tracked = cb.Checked,
+                    ProjectName = projectInfo.Item2
+                };
+
+                Util.InsertTrackedFile(entry);
+            }
             
         }
 

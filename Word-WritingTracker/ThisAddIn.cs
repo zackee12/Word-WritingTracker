@@ -35,6 +35,16 @@ namespace Word_WritingTracker
         void app_DocumentBeforeSave(Word.Document Doc, ref bool SaveAsUI, ref bool Cancel)
         {
             System.Diagnostics.Debug.WriteLineIf(Util.DEBUG, "DocumentBeforeSave");
+
+            app_DocumentChange();
+
+            Microsoft.Office.Tools.Ribbon.RibbonCheckBox cb = Globals.Ribbons.HomeRibbon.checkBoxTrackMetrics;
+            Word.Document activeDoc = Util.GetActiveDocumentOrDefault();
+            
+            if (cb.Checked && !activeDoc.IsDefaultForType() && Util.DocumentIsTracked(activeDoc))
+            {
+                Util.InsertMetric(activeDoc);
+            }
         }
 
         void app_DocumentChange()
