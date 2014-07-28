@@ -66,6 +66,7 @@
             this.checkBoxTrackMetrics.Name = "checkBoxTrackMetrics";
             this.checkBoxTrackMetrics.ScreenTip = "Track this document";
             this.checkBoxTrackMetrics.SuperTip = "Enables tracking of the current document\'s word count";
+            this.checkBoxTrackMetrics.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBoxTrackMetrics_Click);
             // 
             // buttonChart
             // 
@@ -76,6 +77,7 @@
             this.buttonChart.ScreenTip = "Open Charts";
             this.buttonChart.ShowImage = true;
             this.buttonChart.SuperTip = "Opens configurable word count charts";
+            this.buttonChart.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonChart_Click);
             // 
             // buttonExport
             // 
@@ -85,6 +87,7 @@
             this.buttonExport.ScreenTip = "Export Data";
             this.buttonExport.ShowImage = true;
             this.buttonExport.SuperTip = "Export SQL data to a formated Excel document";
+            this.buttonExport.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonExport_Click);
             // 
             // buttonSettings
             // 
@@ -94,6 +97,7 @@
             this.buttonSettings.ScreenTip = "Project Settings";
             this.buttonSettings.ShowImage = true;
             this.buttonSettings.SuperTip = "Adjust project settings such as project name and location";
+            this.buttonSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSettings_Click);
             // 
             // HomeRibbon
             // 

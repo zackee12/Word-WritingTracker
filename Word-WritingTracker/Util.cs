@@ -9,14 +9,35 @@ using Statistic = Microsoft.Office.Interop.Word.WdStatistic;
 namespace Word_WritingTracker
 {
     public static class Util
-    { 
+    {
+        public static bool DEBUG = true;
+
         /// <summary>
         /// Gets the active document from the application
         /// </summary>
         /// <returns></returns>
-        public static Word.Document GetActiveDocument() 
+        public static Word.Document GetActiveDocumentOrDefault() 
         {
-            return Globals.ThisAddIn.Application.ActiveDocument;
+            try
+            {
+                if (HasAvailableWindows())
+                    return Globals.ThisAddIn.Application.ActiveDocument;
+                else
+                    return default(Word.Document);
+            }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                return default(Word.Document);
+            }
+        }
+
+        /// <summary>
+        /// Determines if any word windows are open
+        /// </summary>
+        /// <returns></returns>
+        public static Boolean HasAvailableWindows()
+        {
+            return Globals.ThisAddIn.Application.Windows.Count > 0;
         }
 
         /// <summary>
