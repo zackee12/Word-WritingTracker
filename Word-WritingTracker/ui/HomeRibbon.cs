@@ -90,7 +90,8 @@ namespace Word_WritingTracker
 
         private void buttonChart_Click(object sender, RibbonControlEventArgs e)
         {
-            MessageBox.Show("Sorry! :(  This feature hasn't been implemented yet.", "Not Implemented", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ChartForm cf = new ChartForm();
+            cf.Show();
         }
         #endregion
     }

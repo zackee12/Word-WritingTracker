@@ -128,15 +128,56 @@ namespace Word_WritingTracker
             return false;
         }
 
-        public static Boolean ProjectFilePathIsWrong(Word.Document document)
+        public static void InsertTrackedFile(TrackedFile trackedFile)
         {
-            Tuple<String, String> projectInfo = GetProjectInfo(document);
-            TrackedFile trackedFile = GetTrackedFile(projectInfo);
-
-            if (!trackedFile.IsDefaultForType())
-                return trackedFile.FileName == projectInfo.Item1;
-            
-            return false;
+            using (WritingTrackerDataContext db = new WritingTrackerDataContext())
+            {
+                db.TrackedFiles.InsertOnSubmit(trackedFile);
+                db.SubmitChanges();
+            }
         }
+
+        public static void UpdateTrackedFile(TrackedFile trackedFile)
+        {
+            using (WritingTrackerDataContext db = new WritingTrackerDataContext())
+            {
+                TrackedFile tracked = (from tf in db.TrackedFiles
+                                       where tf.ProjectName == trackedFile.ProjectName
+                                       select tf).SingleOrDefault();
+
+                if (!tracked.IsDefaultForType())
+                {
+                    tracked.FileName = trackedFile.FileName;
+                    tracked.Tracked = trackedFile.Tracked;
+                    db.SubmitChanges();
+                }
+            }
+        }
+
+        public static void InsertMetric(Word.Document document)
+        {
+            using (WritingTrackerDataContext db = new WritingTrackerDataContext())
+            {
+                Tuple<String, String> projectInfo = GetProjectInfo(document);
+                TrackedFile tracked = (from tf in db.TrackedFiles
+                                       where tf.ProjectName == projectInfo.Item2
+                                       select tf).SingleOrDefault();
+
+                if (!tracked.IsDefaultForType())
+                {
+                    Metric metric = new Metric 
+                    {
+                        TrackedFile = tracked,
+                        WordCount = Util.GetWordCount(document, false),
+                        TimeStamp = DateTime.Now
+                    };
+                    db.Metrics.InsertOnSubmit(metric);
+                    db.SubmitChanges();
+                }
+                
+            }
+        }
+
+        
     }
 }
