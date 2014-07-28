@@ -32,6 +32,12 @@ namespace Word_WritingTracker
             System.Diagnostics.Debug.WriteLineIf(Util.DEBUG, "DocumentBeforeClose");
         }
 
+        /// <summary>
+        /// Insert a new metric before save if applicable
+        /// </summary>
+        /// <param name="Doc"></param>
+        /// <param name="SaveAsUI"></param>
+        /// <param name="Cancel"></param>
         void app_DocumentBeforeSave(Word.Document Doc, ref bool SaveAsUI, ref bool Cancel)
         {
             System.Diagnostics.Debug.WriteLineIf(Util.DEBUG, "DocumentBeforeSave");
@@ -47,6 +53,9 @@ namespace Word_WritingTracker
             }
         }
 
+        /// <summary>
+        /// Update the tracked ribbon checkbox for the new document
+        /// </summary>
         void app_DocumentChange()
         {
             System.Diagnostics.Debug.WriteLineIf(Util.DEBUG, "DocumentChange");
