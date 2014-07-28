@@ -60,7 +60,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(734, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(858, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -91,9 +91,9 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 376);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 429);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(734, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(858, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -108,7 +108,7 @@
             this.groupBoxChartSettings.Controls.Add(this.comboBoxChartType);
             this.groupBoxChartSettings.Location = new System.Drawing.Point(12, 28);
             this.groupBoxChartSettings.Name = "groupBoxChartSettings";
-            this.groupBoxChartSettings.Size = new System.Drawing.Size(148, 345);
+            this.groupBoxChartSettings.Size = new System.Drawing.Size(148, 398);
             this.groupBoxChartSettings.TabIndex = 2;
             this.groupBoxChartSettings.TabStop = false;
             this.groupBoxChartSettings.Text = "Chart Settings";
@@ -247,7 +247,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chart.Series.Add(series1);
-            this.chart.Size = new System.Drawing.Size(567, 345);
+            this.chart.Size = new System.Drawing.Size(691, 398);
             this.chart.TabIndex = 3;
             this.chart.Text = "chart1";
             title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -259,7 +259,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(734, 398);
+            this.ClientSize = new System.Drawing.Size(858, 451);
             this.Controls.Add(this.chart);
             this.Controls.Add(this.groupBoxChartSettings);
             this.Controls.Add(this.statusStrip1);
