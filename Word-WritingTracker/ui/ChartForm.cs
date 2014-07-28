@@ -51,7 +51,7 @@ namespace Word_WritingTracker
             {
                 List<Tuple<DateTime, int>> dataList = new List<Tuple<DateTime, int>>();
                 if (!dict.TryGetValue(projectName, out dataList))
-                    System.Diagnostics.Debug.WriteLine("Failed to get data list value");
+                    System.Diagnostics.Debug.WriteLineIf(Util.DEBUG, "Dictionary Error - Failed to get data list value");
 
                 var series = new System.Windows.Forms.DataVisualization.Charting.Series
                 {
@@ -106,7 +106,7 @@ namespace Word_WritingTracker
             {
                 var metricList = new List<Metric>();
                 if (!dict.TryGetValue(tf, out metricList))
-                    System.Diagnostics.Debug.WriteLine("Failed to get metricList from dictionary");
+                    System.Diagnostics.Debug.WriteLineIf(Util.DEBUG, "Dictionary Error - Failed to get metric list value");
 
                 int wordCount = metricList.OrderByDescending(m => m.TimeStamp).First().WordCount;
                 // set up data point with a tool tip

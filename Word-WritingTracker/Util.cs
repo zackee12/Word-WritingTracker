@@ -273,7 +273,7 @@ namespace Word_WritingTracker
             {
                 var metricList = new List<Metric>();
                 if (!dict.TryGetValue(tf, out metricList))
-                    System.Diagnostics.Debug.WriteLine("Failed to get metricList from dictionary");
+                    System.Diagnostics.Debug.WriteLineIf(Util.DEBUG, "Dictionary Error - Failed to get metric list value");
 
                 metricList = metricList.OrderByDescending(m => m.TimeStamp).ToList();
                 //DateTime start = metricList.Last().Timestamp;
